@@ -115,7 +115,7 @@ final FlutterLocalNotificationsPlugin _notifications =
 //     return Future.value(true);
 //   });
 // }
-Future showNotification(String text) async {
+Future showNotification(String text, bool fifteen) async {
   // WidgetsFlutterBinding.ensureInitialized();
   // final appDocumentDirectory = await getApplicationDocumentsDirectory();
   // WidgetsFlutterBinding.ensureInitialized();
@@ -141,11 +141,7 @@ Future showNotification(String text) async {
   // await Hive.box('askarPage1').close();
 
   // int rndmIndex = Random().nextInt(allList.length - 1);
-  if (Platform.isAndroid) SharedPreferencesAndroid.registerWith();
-  if (Platform.isIOS) SharedPreferencesFoundation.registerWith();
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  // TODO: check here
-  bool mode_15 = prefs.getBool('15mode') ?? false;
+
   AndroidNotificationDetails androidPlatformChannelSpecifics =
       AndroidNotificationDetails('hellow', 'تطبيق المسلم',
           channelDescription: 'تطبيق اذكار وادعية وتلاوة وقراءة القرءان الكريم',
@@ -154,7 +150,7 @@ Future showNotification(String text) async {
           playSound: true,
           enableVibration: true,
           autoCancel: true,
-          timeoutAfter: mode_15 ? 10000 : null);
+          timeoutAfter: fifteen ? 15000 : null);
   var iOSPlatformChannelSpecifics = DarwinNotificationDetails(
     threadIdentifier: 'thread_id',
   );
@@ -236,13 +232,16 @@ void callbackDispatcher() {
       }
     }
 
-    // print(allAskar);
+    bool mode_15 = prefs.getBool('mode15') ?? true;
+    print('################## 15 mode ############################');
+    print(mode_15);
     if (allAskar.length == 1 || allAskar.isEmpty) {
       allAskar.add('لاحول ولا قوة الا بالله');
     }
     int rndmIndex = Random().nextInt(allAskar.length - 1);
     String text = allAskar[rndmIndex];
-    showNotification(text);
+
+    showNotification(text, mode_15);
 
     return Future.value(true);
   });

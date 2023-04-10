@@ -1336,9 +1336,9 @@ class SittingPage extends StatefulWidget {
 }
 
 class _SittingPageState extends State<SittingPage> {
-  bool light0 = true;
-  bool light1 = true;
-  bool light2 = true;
+  bool mode15 = true;
+  bool hideNoti = false;
+  bool showNoti_MN = true;
   String morningHour = '';
   String morningMinute = '';
   String morningMode = '';
@@ -1358,14 +1358,19 @@ class _SittingPageState extends State<SittingPage> {
     });
   }
 
-  void getSitting() {
-    // TODO: set data base of 15 second mode
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
+  void getSitting() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      mode15 = prefs.getBool('mode15') ?? true;
+      hideNoti = prefs.getBool('hideNoti') ?? false;
+      showNoti_MN = prefs.getBool('showNoti_MN') ?? true;
+    });
   }
 
   @override
   void initState() {
     super.initState();
+    getSitting();
     getTime();
   }
 
@@ -1442,13 +1447,13 @@ class _SittingPageState extends State<SittingPage> {
                       Switch(
                         activeColor: Color(0xFF76d668),
                         inactiveTrackColor: Color(0xffececec),
-                        value: light0,
+                        value: mode15,
                         onChanged: (bool value) async {
                           final SharedPreferences prefs =
                               await SharedPreferences.getInstance();
                           setState(() {
-                            light0 = value;
-                            prefs.setBool('15mode', value);
+                            mode15 = value;
+                            prefs.setBool('mode15', value);
                           });
                         },
                       ),
@@ -1490,10 +1495,13 @@ class _SittingPageState extends State<SittingPage> {
                       Switch(
                         activeColor: Color(0xFF76d668),
                         inactiveTrackColor: Color(0xffececec),
-                        value: light1,
-                        onChanged: (bool value) {
+                        value: hideNoti,
+                        onChanged: (bool value) async {
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
                           setState(() {
-                            light1 = value;
+                            hideNoti = value;
+                            prefs.setBool('hideNoti', value);
                           });
                         },
                       ),
@@ -1557,10 +1565,13 @@ class _SittingPageState extends State<SittingPage> {
                       Switch(
                         activeColor: Color(0xFF76d668),
                         inactiveTrackColor: Color(0xffececec),
-                        value: light2,
-                        onChanged: (bool value) {
+                        value: showNoti_MN,
+                        onChanged: (bool value) async {
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
                           setState(() {
-                            light2 = value;
+                            showNoti_MN = value;
+                            prefs.setBool('showNoti_MN', value);
                           });
                         },
                       ),
