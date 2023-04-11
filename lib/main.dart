@@ -197,7 +197,6 @@ void callbackDispatcher() {
         'أهلا وسهلا ومرحبا بكم',
       ];
     } else {
-      print('e;se herrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
       List<String> askar = [
         'الحمد لله',
         'سبحان الله',
@@ -233,8 +232,6 @@ void callbackDispatcher() {
     }
 
     bool mode_15 = prefs.getBool('mode15') ?? true;
-    print('################## 15 mode ############################');
-    print(mode_15);
     if (allAskar.length == 1 || allAskar.isEmpty) {
       allAskar.add('لاحول ولا قوة الا بالله');
     }
@@ -524,59 +521,61 @@ class _HomePageState extends State<HomePage> {
 
   void setNotificationNormalScheduling() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool shoNormalNoti = prefs.getBool('shoNormalNoti') ?? true;
 
-    int? x = prefs.getInt('notiMinutes');
-    if (x != null) {
-      Workmanager().registerPeriodicTask(
-        "0$x",
-        "periodic Notification",
-        frequency: Duration(minutes: x),
-      );
-      print('############### noti minutes not null ##################');
-      print(x);
-    } else {
-      Workmanager().registerPeriodicTask(
-        "015",
-        "periodic Notification",
-        frequency: Duration(minutes: 15),
-      );
-      print(
-          '############### noti minutes is null  defuled value  ##################');
-      print(15);
-      // prefs.setInt('notiMinutes', 15);
+    if (shoNormalNoti) {
+      int? x = prefs.getInt('notiMinutes');
+      if (x != null) {
+        Workmanager().registerPeriodicTask(
+          "0$x",
+          "periodic Notification",
+          frequency: Duration(minutes: x),
+        );
+      } else {
+        Workmanager().registerPeriodicTask(
+          "015",
+          "periodic Notification",
+          frequency: Duration(minutes: 15),
+        );
+      }
     }
   }
 
   void setNotificationM_NScheduling() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String morningHour = prefs.getString('morningHour') ?? '5';
-    String morningMinute = prefs.getString('morningMinute') ?? '00';
-    String morningMode = prefs.getString('morningMode') ?? 'ص';
+    bool showNM_Noti = prefs.getBool('showNoti_MN') ?? true;
+    print('################ showNM_Noti########################');
+    print(showNM_Noti);
+    if (showNM_Noti) {
+      String morningHour = prefs.getString('morningHour') ?? '5';
+      String morningMinute = prefs.getString('morningMinute') ?? '00';
+      String morningMode = prefs.getString('morningMode') ?? 'ص';
 
-    String nightHour = prefs.getString('nightHour') ?? '6';
-    String nightMinute = prefs.getString('nightMinute') ?? '50';
-    String nightMode = prefs.getString('nightMode') ?? 'م';
+      String nightHour = prefs.getString('nightHour') ?? '6';
+      String nightMinute = prefs.getString('nightMinute') ?? '50';
+      String nightMode = prefs.getString('nightMode') ?? 'م';
 
-    int mh = int.parse(morningHour);
-    mh = mh + (morningMode == 'م' ? 12 : 0);
-    int mm = int.parse(morningMinute);
+      int mh = int.parse(morningHour);
+      mh = mh + (morningMode == 'م' ? 12 : 0);
+      int mm = int.parse(morningMinute);
 
-    int nh = int.parse(nightHour);
-    nh = nh + (nightMode == 'م' ? 12 : 0);
-    int nm = int.parse(nightMinute);
+      int nh = int.parse(nightHour);
+      nh = nh + (nightMode == 'م' ? 12 : 0);
+      int nm = int.parse(nightMinute);
 
-    Noti.notificationScheduled(
-        id: 1,
-        title: 'حصن المسلم ',
-        body: 'اذكار الصباح',
-        time: Time(mh, mm),
-        payload: 'اذكار الصباح');
-    Noti.notificationScheduled(
-        id: 2,
-        title: 'حصن المسلم ',
-        body: 'اذكار المساء',
-        time: Time(nh, nm),
-        payload: 'اذكار المساء');
+      Noti.notificationScheduled(
+          id: 1,
+          title: 'حصن المسلم ',
+          body: 'اذكار الصباح',
+          time: Time(mh, mm),
+          payload: 'اذكار الصباح');
+      Noti.notificationScheduled(
+          id: 2,
+          title: 'حصن المسلم ',
+          body: 'اذكار المساء',
+          time: Time(nh, nm),
+          payload: 'اذكار المساء');
+    }
   }
 
   @override

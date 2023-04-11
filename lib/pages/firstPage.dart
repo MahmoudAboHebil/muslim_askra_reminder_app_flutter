@@ -1219,14 +1219,41 @@ class _bellowNavBarState extends State<bellowNavBar> {
                   children: [
                     Expanded(
                       child: NavButton(
-                        () {
+                        () async {
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          bool shoNormalNoti =
+                              prefs.getBool('shoNormalNoti') ?? true;
                           Workmanager().cancelAll();
                           changePressed(1);
-                          Workmanager().registerPeriodicTask(
-                            "0480",
-                            "periodic Notification",
-                            frequency: Duration(minutes: 480),
-                          );
+                          if (shoNormalNoti) {
+                            Workmanager().registerPeriodicTask(
+                              "0480",
+                              "periodic Notification",
+                              frequency: Duration(minutes: 480),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(
+                                    milliseconds:
+                                        shoNormalNoti == true ? 500 : 1500),
+                                backgroundColor: shoNormalNoti == true
+                                    ? Color(0xFF76d668)
+                                    : Colors.grey,
+                                content: Text(
+                                  textAlign: TextAlign.end,
+                                  shoNormalNoti == true
+                                      ? 'تم بنجاح '
+                                      : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            );
+                          }
                         },
                         BoxConstraints.tightFor(
                           width: s1 ? 60 : 50,
@@ -1238,14 +1265,41 @@ class _bellowNavBarState extends State<bellowNavBar> {
                     ),
                     Expanded(
                       child: NavButton(
-                        () {
+                        () async {
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          bool shoNormalNoti =
+                              prefs.getBool('shoNormalNoti') ?? true;
                           Workmanager().cancelAll();
                           changePressed(2);
-                          Workmanager().registerPeriodicTask(
-                            "0144",
-                            "periodic Notification",
-                            frequency: Duration(minutes: 144),
-                          );
+                          if (shoNormalNoti) {
+                            Workmanager().registerPeriodicTask(
+                              "0144",
+                              "periodic Notification",
+                              frequency: Duration(minutes: 144),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(
+                                    milliseconds:
+                                        shoNormalNoti == true ? 500 : 1500),
+                                backgroundColor: shoNormalNoti == true
+                                    ? Color(0xFF76d668)
+                                    : Colors.grey,
+                                content: Text(
+                                  textAlign: TextAlign.end,
+                                  shoNormalNoti == true
+                                      ? 'تم بنجاح '
+                                      : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            );
+                          }
                         },
                         BoxConstraints.tightFor(
                           width: s2 ? 60 : 50,
@@ -1257,14 +1311,42 @@ class _bellowNavBarState extends State<bellowNavBar> {
                     ),
                     Expanded(
                       child: NavButton(
-                        () {
+                        () async {
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          bool shoNormalNoti =
+                              prefs.getBool('shoNormalNoti') ?? true;
+
                           Workmanager().cancelAll();
                           changePressed(3);
-                          Workmanager().registerPeriodicTask(
-                            "084",
-                            "periodic Notification",
-                            frequency: Duration(minutes: 84),
-                          );
+                          if (shoNormalNoti) {
+                            Workmanager().registerPeriodicTask(
+                              "084",
+                              "periodic Notification",
+                              frequency: Duration(minutes: 84),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(
+                                    milliseconds:
+                                        shoNormalNoti == true ? 500 : 1500),
+                                backgroundColor: shoNormalNoti == true
+                                    ? Color(0xFF76d668)
+                                    : Colors.grey,
+                                content: Text(
+                                  textAlign: TextAlign.end,
+                                  shoNormalNoti == true
+                                      ? 'تم بنجاح '
+                                      : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            );
+                          }
                         },
                         BoxConstraints.tightFor(
                           width: s3 ? 60 : 50,
@@ -1276,14 +1358,42 @@ class _bellowNavBarState extends State<bellowNavBar> {
                     ),
                     Expanded(
                       child: NavButton(
-                        () {
+                        () async {
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          bool shoNormalNoti =
+                              prefs.getBool('shoNormalNoti') ?? true;
+
                           Workmanager().cancelAll();
                           changePressed(4);
-                          Workmanager().registerPeriodicTask(
-                            "015",
-                            "periodic Notification",
-                            frequency: Duration(minutes: 15),
-                          );
+                          if (shoNormalNoti) {
+                            Workmanager().registerPeriodicTask(
+                              "015",
+                              "periodic Notification",
+                              frequency: Duration(minutes: 15),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(
+                                    milliseconds:
+                                        shoNormalNoti == true ? 500 : 1500),
+                                backgroundColor: shoNormalNoti == true
+                                    ? Color(0xFF76d668)
+                                    : Colors.grey,
+                                content: Text(
+                                  textAlign: TextAlign.end,
+                                  shoNormalNoti == true
+                                      ? 'تم بنجاح '
+                                      : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            );
+                          }
                         },
                         BoxConstraints.tightFor(
                           width: s4 ? 60 : 50,
@@ -1454,6 +1564,20 @@ class _SittingPageState extends State<SittingPage> {
                           setState(() {
                             mode15 = value;
                             prefs.setBool('mode15', value);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                duration: Duration(milliseconds: 500),
+                                backgroundColor: Color(0xFF76d668),
+                                content: Text(
+                                  textAlign: TextAlign.end,
+                                  'تم بنجاح ',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            );
                           });
                         },
                       ),
@@ -1501,7 +1625,22 @@ class _SittingPageState extends State<SittingPage> {
                               await SharedPreferences.getInstance();
                           setState(() {
                             hideNoti = value;
+                            prefs.setBool('shoNormalNoti', !value);
                             prefs.setBool('hideNoti', value);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                duration: Duration(milliseconds: 500),
+                                backgroundColor: Color(0xFF76d668),
+                                content: Text(
+                                  textAlign: TextAlign.end,
+                                  'تم بنجاح ',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            );
                           });
                         },
                       ),
@@ -1510,16 +1649,20 @@ class _SittingPageState extends State<SittingPage> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              'إقاف الظهور على الشاشة',
+                              'إقياف ظهور  الاذكار على الشاشة',
                               style: TextStyle(
                                   color: Color(0xff8f8f8f),
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              'يمكنك إقاف التطبيق وتشغيله لاحقا ',
+                              hideNoti
+                                  ? 'الاشعارات غير مفعله الان'
+                                  : 'يمكنك إقاف التطبيق وتشغيله لاحقا ',
                               style: TextStyle(
-                                  color: Color(0xff828282), fontSize: 16),
+                                  color:
+                                      hideNoti ? Colors.red : Color(0xff828282),
+                                  fontSize: 16),
                             ),
                           ],
                         ),
@@ -1572,6 +1715,20 @@ class _SittingPageState extends State<SittingPage> {
                           setState(() {
                             showNoti_MN = value;
                             prefs.setBool('showNoti_MN', value);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                duration: Duration(milliseconds: 500),
+                                backgroundColor: Color(0xFF76d668),
+                                content: Text(
+                                  textAlign: TextAlign.end,
+                                  'تم بنجاح ',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            );
                           });
                         },
                       ),
@@ -1601,8 +1758,6 @@ class _SittingPageState extends State<SittingPage> {
                       context: context,
                       initialTime: TimeOfDay(hour: mh, minute: mm));
                   if (dt != null) {
-                    print('#################################');
-                    // print(dt);
                     List<String> ls = [];
                     ls = dt.format(context).split(':');
                     String hour = ls[0];
@@ -1688,7 +1843,6 @@ class _SittingPageState extends State<SittingPage> {
                       context: context,
                       initialTime: TimeOfDay(hour: nh, minute: nm));
                   if (dt != null) {
-                    print('#################################');
                     // print(dt);
                     List<String> ls = [];
                     ls = dt.format(context).split(':');
