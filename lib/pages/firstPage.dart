@@ -11,6 +11,7 @@ import 'package:workmanager/workmanager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_local_notification1/notification_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:test_local_notification1/main.dart';
 import 'package:intl/intl.dart';
 import 'package:arabic_numbers/arabic_numbers.dart';
 
@@ -1627,6 +1628,24 @@ class _SittingPageState extends State<SittingPage> {
                             hideNoti = value;
                             prefs.setBool('shoNormalNoti', !value);
                             prefs.setBool('hideNoti', value);
+                            if (value) {
+                              Workmanager().cancelAll();
+                            } else {
+                              int? x = prefs.getInt('notiMinutes');
+                              if (x != null) {
+                                Workmanager().registerPeriodicTask(
+                                  "0$x",
+                                  "periodic Notification",
+                                  frequency: Duration(minutes: x),
+                                );
+                              } else {
+                                Workmanager().registerPeriodicTask(
+                                  "015",
+                                  "periodic Notification",
+                                  frequency: Duration(minutes: 15),
+                                );
+                              }
+                            }
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 duration: Duration(milliseconds: 500),
@@ -1715,6 +1734,45 @@ class _SittingPageState extends State<SittingPage> {
                           setState(() {
                             showNoti_MN = value;
                             prefs.setBool('showNoti_MN', value);
+                            if (value) {
+                              String morningHour =
+                                  prefs.getString('morningHour') ?? '5';
+                              String morningMinute =
+                                  prefs.getString('morningMinute') ?? '00';
+                              String morningMode =
+                                  prefs.getString('morningMode') ?? 'ص';
+
+                              String nightHour =
+                                  prefs.getString('nightHour') ?? '6';
+                              String nightMinute =
+                                  prefs.getString('nightMinute') ?? '50';
+                              String nightMode =
+                                  prefs.getString('nightMode') ?? 'م';
+
+                              int mh = int.parse(morningHour);
+                              mh = mh + (morningMode == 'م' ? 12 : 0);
+                              int mm = int.parse(morningMinute);
+
+                              int nh = int.parse(nightHour);
+                              nh = nh + (nightMode == 'م' ? 12 : 0);
+                              int nm = int.parse(nightMinute);
+
+                              Noti.notificationScheduled(
+                                  id: 1,
+                                  title: 'حصن المسلم ',
+                                  body: 'اذكار الصباح',
+                                  time: Time(mh, mm),
+                                  payload: 'اذكار الصباح');
+                              Noti.notificationScheduled(
+                                  id: 2,
+                                  title: 'حصن المسلم ',
+                                  body: 'اذكار المساء',
+                                  time: Time(nh, nm),
+                                  payload: 'اذكار المساء');
+                            } else {
+                              Noti.cancelSpecificNot(1);
+                              Noti.cancelSpecificNot(2);
+                            }
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 duration: Duration(milliseconds: 500),
