@@ -14,6 +14,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:test_local_notification1/main.dart';
 import 'package:intl/intl.dart';
 import 'package:arabic_numbers/arabic_numbers.dart';
+import 'package:page_transition/page_transition.dart';
 
 // Future showNotification() async {
 //   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -226,11 +227,7 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
           clipBehavior: Clip.none,
           alignment: Alignment.topCenter,
           children: [
-            AnimatedOpacity(
-              opacity: apper ? 1.0 : 0.0,
-              duration: Duration(seconds: 1),
-              child: bellowNavBar(),
-            ),
+            bellowNavBar(apper ? 1.0 : 0.0),
             Column(
               children: [
                 SizedBox(
@@ -1100,6 +1097,10 @@ class _FirstPageState extends State<FirstPage> with TickerProviderStateMixin {
 // }
 
 class bellowNavBar extends StatefulWidget {
+  double opac;
+
+  bellowNavBar(this.opac);
+
   @override
   State<bellowNavBar> createState() => _bellowNavBarState();
 }
@@ -1191,225 +1192,229 @@ class _bellowNavBarState extends State<bellowNavBar> {
       alignment: Alignment.topRight,
       padding: EdgeInsets.only(right: 20.0, left: 20.0),
       color: Color(0xFF76d668),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          CustomText('معدل ظهور الأذكار', 30.0, Colors.white),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+      child: AnimatedOpacity(
+        duration: Duration(seconds: 1),
+        opacity: widget.opac,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            CustomText('معدل ظهور الأذكار', 30.0, Colors.white),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CustomText('يومياً ', 30.0, Colors.yellow),
+                  CustomText('$n', 25.0, Colors.yellow),
+                ],
+              ),
+            ),
+            Stack(
+              alignment: Alignment.center,
               children: [
-                CustomText('يومياً ', 30.0, Colors.yellow),
-                CustomText('$n', 25.0, Colors.yellow),
+                Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                ),
+                Container(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: NavButton(
+                          () async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            bool shoNormalNoti =
+                                prefs.getBool('shoNormalNoti') ?? true;
+                            Workmanager().cancelAll();
+                            changePressed(1);
+                            if (shoNormalNoti) {
+                              Workmanager().registerPeriodicTask(
+                                "0480",
+                                "periodic Notification",
+                                frequency: Duration(minutes: 480),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: Duration(
+                                      milliseconds:
+                                          shoNormalNoti == true ? 500 : 1500),
+                                  backgroundColor: shoNormalNoti == true
+                                      ? Color(0xFF76d668)
+                                      : Colors.grey,
+                                  content: Text(
+                                    textAlign: TextAlign.end,
+                                    shoNormalNoti == true
+                                        ? 'تم بنجاح '
+                                        : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          BoxConstraints.tightFor(
+                            width: s1 ? 60 : 50,
+                            height: s1 ? 60 : 50,
+                          ),
+                          'نادر',
+                          s1 ? Colors.yellow : Color(0xFF63b459),
+                        ),
+                      ),
+                      Expanded(
+                        child: NavButton(
+                          () async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            bool shoNormalNoti =
+                                prefs.getBool('shoNormalNoti') ?? true;
+                            Workmanager().cancelAll();
+                            changePressed(2);
+                            if (shoNormalNoti) {
+                              Workmanager().registerPeriodicTask(
+                                "0144",
+                                "periodic Notification",
+                                frequency: Duration(minutes: 144),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: Duration(
+                                      milliseconds:
+                                          shoNormalNoti == true ? 500 : 1500),
+                                  backgroundColor: shoNormalNoti == true
+                                      ? Color(0xFF76d668)
+                                      : Colors.grey,
+                                  content: Text(
+                                    textAlign: TextAlign.end,
+                                    shoNormalNoti == true
+                                        ? 'تم بنجاح '
+                                        : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          BoxConstraints.tightFor(
+                            width: s2 ? 60 : 50,
+                            height: s2 ? 60 : 50,
+                          ),
+                          'منخفض',
+                          s2 ? Colors.yellow : Color(0xFF63b459),
+                        ),
+                      ),
+                      Expanded(
+                        child: NavButton(
+                          () async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            bool shoNormalNoti =
+                                prefs.getBool('shoNormalNoti') ?? true;
+
+                            Workmanager().cancelAll();
+                            changePressed(3);
+                            if (shoNormalNoti) {
+                              Workmanager().registerPeriodicTask(
+                                "084",
+                                "periodic Notification",
+                                frequency: Duration(minutes: 84),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: Duration(
+                                      milliseconds:
+                                          shoNormalNoti == true ? 500 : 1500),
+                                  backgroundColor: shoNormalNoti == true
+                                      ? Color(0xFF76d668)
+                                      : Colors.grey,
+                                  content: Text(
+                                    textAlign: TextAlign.end,
+                                    shoNormalNoti == true
+                                        ? 'تم بنجاح '
+                                        : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          BoxConstraints.tightFor(
+                            width: s3 ? 60 : 50,
+                            height: s3 ? 60 : 50,
+                          ),
+                          'متوسط',
+                          s3 ? Colors.yellow : Color(0xFF63b459),
+                        ),
+                      ),
+                      Expanded(
+                        child: NavButton(
+                          () async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            bool shoNormalNoti =
+                                prefs.getBool('shoNormalNoti') ?? true;
+
+                            Workmanager().cancelAll();
+                            changePressed(4);
+                            if (shoNormalNoti) {
+                              Workmanager().registerPeriodicTask(
+                                "015",
+                                "periodic Notification",
+                                frequency: Duration(minutes: 15),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: Duration(
+                                      milliseconds:
+                                          shoNormalNoti == true ? 500 : 1500),
+                                  backgroundColor: shoNormalNoti == true
+                                      ? Color(0xFF76d668)
+                                      : Colors.grey,
+                                  content: Text(
+                                    textAlign: TextAlign.end,
+                                    shoNormalNoti == true
+                                        ? 'تم بنجاح '
+                                        : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          BoxConstraints.tightFor(
+                            width: s4 ? 60 : 50,
+                            height: s4 ? 60 : 50,
+                          ),
+                          'عالى',
+                          s4 ? Colors.yellow : Color(0xFF63b459),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-              ),
-              Container(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: NavButton(
-                        () async {
-                          final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          bool shoNormalNoti =
-                              prefs.getBool('shoNormalNoti') ?? true;
-                          Workmanager().cancelAll();
-                          changePressed(1);
-                          if (shoNormalNoti) {
-                            Workmanager().registerPeriodicTask(
-                              "0480",
-                              "periodic Notification",
-                              frequency: Duration(minutes: 480),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                duration: Duration(
-                                    milliseconds:
-                                        shoNormalNoti == true ? 500 : 1500),
-                                backgroundColor: shoNormalNoti == true
-                                    ? Color(0xFF76d668)
-                                    : Colors.grey,
-                                content: Text(
-                                  textAlign: TextAlign.end,
-                                  shoNormalNoti == true
-                                      ? 'تم بنجاح '
-                                      : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        BoxConstraints.tightFor(
-                          width: s1 ? 60 : 50,
-                          height: s1 ? 60 : 50,
-                        ),
-                        'نادر',
-                        s1 ? Colors.yellow : Color(0xFF63b459),
-                      ),
-                    ),
-                    Expanded(
-                      child: NavButton(
-                        () async {
-                          final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          bool shoNormalNoti =
-                              prefs.getBool('shoNormalNoti') ?? true;
-                          Workmanager().cancelAll();
-                          changePressed(2);
-                          if (shoNormalNoti) {
-                            Workmanager().registerPeriodicTask(
-                              "0144",
-                              "periodic Notification",
-                              frequency: Duration(minutes: 144),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                duration: Duration(
-                                    milliseconds:
-                                        shoNormalNoti == true ? 500 : 1500),
-                                backgroundColor: shoNormalNoti == true
-                                    ? Color(0xFF76d668)
-                                    : Colors.grey,
-                                content: Text(
-                                  textAlign: TextAlign.end,
-                                  shoNormalNoti == true
-                                      ? 'تم بنجاح '
-                                      : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        BoxConstraints.tightFor(
-                          width: s2 ? 60 : 50,
-                          height: s2 ? 60 : 50,
-                        ),
-                        'منخفض',
-                        s2 ? Colors.yellow : Color(0xFF63b459),
-                      ),
-                    ),
-                    Expanded(
-                      child: NavButton(
-                        () async {
-                          final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          bool shoNormalNoti =
-                              prefs.getBool('shoNormalNoti') ?? true;
-
-                          Workmanager().cancelAll();
-                          changePressed(3);
-                          if (shoNormalNoti) {
-                            Workmanager().registerPeriodicTask(
-                              "084",
-                              "periodic Notification",
-                              frequency: Duration(minutes: 84),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                duration: Duration(
-                                    milliseconds:
-                                        shoNormalNoti == true ? 500 : 1500),
-                                backgroundColor: shoNormalNoti == true
-                                    ? Color(0xFF76d668)
-                                    : Colors.grey,
-                                content: Text(
-                                  textAlign: TextAlign.end,
-                                  shoNormalNoti == true
-                                      ? 'تم بنجاح '
-                                      : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        BoxConstraints.tightFor(
-                          width: s3 ? 60 : 50,
-                          height: s3 ? 60 : 50,
-                        ),
-                        'متوسط',
-                        s3 ? Colors.yellow : Color(0xFF63b459),
-                      ),
-                    ),
-                    Expanded(
-                      child: NavButton(
-                        () async {
-                          final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          bool shoNormalNoti =
-                              prefs.getBool('shoNormalNoti') ?? true;
-
-                          Workmanager().cancelAll();
-                          changePressed(4);
-                          if (shoNormalNoti) {
-                            Workmanager().registerPeriodicTask(
-                              "015",
-                              "periodic Notification",
-                              frequency: Duration(minutes: 15),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                duration: Duration(
-                                    milliseconds:
-                                        shoNormalNoti == true ? 500 : 1500),
-                                backgroundColor: shoNormalNoti == true
-                                    ? Color(0xFF76d668)
-                                    : Colors.grey,
-                                content: Text(
-                                  textAlign: TextAlign.end,
-                                  shoNormalNoti == true
-                                      ? 'تم بنجاح '
-                                      : 'يجب عليك تفعيل التنبيهات فى اعدادات التطبيق',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        BoxConstraints.tightFor(
-                          width: s4 ? 60 : 50,
-                          height: s4 ? 60 : 50,
-                        ),
-                        'عالى',
-                        s4 ? Colors.yellow : Color(0xFF63b459),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -1424,11 +1429,19 @@ class AppBarFirstPage extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0.0,
       leading: IconButton(
         onPressed: () {
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => SittingPage(),
+          //     ));
+
           Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => SittingPage(),
-              ));
+              PageTransition(
+                  type: PageTransitionType.leftToRightWithFade,
+                  duration: Duration(seconds: 1),
+                  child: SittingPage(),
+                  isIos: true));
         },
         icon: Icon(
           Icons.settings,
@@ -1487,495 +1500,513 @@ class _SittingPageState extends State<SittingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Color(0xffececec),
-          appBar: AppBar(
-            elevation: 0.0,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                size: 30.0,
-                color: Colors.white,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeftWithFade,
+                child: FirstPage(),
+                isIos: true));
+
+        return false;
+      },
+      child: Container(
+        color: Colors.grey,
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: Color(0xffececec),
+            appBar: AppBar(
+              elevation: 0.0,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeftWithFade,
+                          child: FirstPage(),
+                          isIos: true));
+                },
+                icon: Icon(
+                  Icons.arrow_back,
+                  size: 30.0,
+                  color: Colors.white,
+                ),
               ),
+              actions: [
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Text(
+                    'إعدادات',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.settings_outlined,
+                      size: 30.0, color: Colors.white),
+                )
+              ],
+              backgroundColor: Color(0xFF76d668),
             ),
-            actions: [
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Text(
-                  'إعدادات',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.settings_outlined,
-                    size: 30.0, color: Colors.white),
-              )
-            ],
-            backgroundColor: Color(0xFF76d668),
-          ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                height: 150,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.notification_add_outlined,
-                        color: Color(0xffc1c1c1),
-                        size: 30,
-                      ),
-                      Text(
-                        'اشعارات الاذكار',
-                        style:
-                            TextStyle(color: Color(0xffc1c1c1), fontSize: 30),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                height: 85,
-                color: Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Switch(
-                        activeColor: Color(0xFF76d668),
-                        inactiveTrackColor: Color(0xffececec),
-                        value: mode15,
-                        onChanged: (bool value) async {
-                          final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          setState(() {
-                            mode15 = value;
-                            prefs.setBool('mode15', value);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                duration: Duration(milliseconds: 500),
-                                backgroundColor: Color(0xFF76d668),
-                                content: Text(
-                                  textAlign: TextAlign.end,
-                                  'تم بنجاح ',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                              ),
-                            );
-                          });
-                        },
-                      ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              'الإختفاء التلقائى',
-                              style: TextStyle(
-                                  color: Color(0xff8f8f8f),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'تختفى الأذكار تلقائيا بعد 15 ثانيه',
-                              style: TextStyle(
-                                  color: Color(0xff828282), fontSize: 16),
-                            ),
-                          ],
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  height: 150,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.notification_add_outlined,
+                          color: Color(0xffc1c1c1),
+                          size: 30,
                         ),
-                      )
-                    ],
+                        Text(
+                          'اشعارات الاذكار',
+                          style:
+                              TextStyle(color: Color(0xffc1c1c1), fontSize: 30),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Divider(
-                height: 1,
-                color: Colors.grey,
-              ),
-              Container(
-                height: 85,
-                color: Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Switch(
-                        activeColor: Color(0xFF76d668),
-                        inactiveTrackColor: Color(0xffececec),
-                        value: hideNoti,
-                        onChanged: (bool value) async {
-                          final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          setState(() {
-                            hideNoti = value;
-                            prefs.setBool('shoNormalNoti', !value);
-                            prefs.setBool('hideNoti', value);
-                            if (value) {
-                              Workmanager().cancelAll();
-                            } else {
-                              int? x = prefs.getInt('notiMinutes');
-                              if (x != null) {
-                                Workmanager().registerPeriodicTask(
-                                  "0$x",
-                                  "periodic Notification",
-                                  frequency: Duration(minutes: x),
-                                );
+                Container(
+                  height: 85,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Switch(
+                          activeColor: Color(0xFF76d668),
+                          inactiveTrackColor: Color(0xffececec),
+                          value: mode15,
+                          onChanged: (bool value) async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            setState(() {
+                              mode15 = value;
+                              prefs.setBool('mode15', value);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  duration: Duration(milliseconds: 500),
+                                  backgroundColor: Color(0xFF76d668),
+                                  content: Text(
+                                    textAlign: TextAlign.end,
+                                    'تم بنجاح ',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                              );
+                            });
+                          },
+                        ),
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                'الإختفاء التلقائى',
+                                style: TextStyle(
+                                    color: Color(0xff8f8f8f),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'تختفى الأذكار تلقائيا بعد 15 ثانيه',
+                                style: TextStyle(
+                                    color: Color(0xff828282), fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Divider(
+                  height: 1,
+                  color: Colors.grey,
+                ),
+                Container(
+                  height: 85,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Switch(
+                          activeColor: Color(0xFF76d668),
+                          inactiveTrackColor: Color(0xffececec),
+                          value: hideNoti,
+                          onChanged: (bool value) async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            setState(() {
+                              hideNoti = value;
+                              prefs.setBool('shoNormalNoti', !value);
+                              prefs.setBool('hideNoti', value);
+                              if (value) {
+                                Workmanager().cancelAll();
                               } else {
-                                Workmanager().registerPeriodicTask(
-                                  "015",
-                                  "periodic Notification",
-                                  frequency: Duration(minutes: 15),
-                                );
+                                int? x = prefs.getInt('notiMinutes');
+                                if (x != null) {
+                                  Workmanager().registerPeriodicTask(
+                                    "0$x",
+                                    "periodic Notification",
+                                    frequency: Duration(minutes: x),
+                                  );
+                                } else {
+                                  Workmanager().registerPeriodicTask(
+                                    "015",
+                                    "periodic Notification",
+                                    frequency: Duration(minutes: 15),
+                                  );
+                                }
                               }
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                duration: Duration(milliseconds: 500),
-                                backgroundColor: Color(0xFF76d668),
-                                content: Text(
-                                  textAlign: TextAlign.end,
-                                  'تم بنجاح ',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  duration: Duration(milliseconds: 500),
+                                  backgroundColor: Color(0xFF76d668),
+                                  content: Text(
+                                    textAlign: TextAlign.end,
+                                    'تم بنجاح ',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
                                 ),
+                              );
+                            });
+                          },
+                        ),
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                'إقياف ظهور  الاذكار على الشاشة',
+                                style: TextStyle(
+                                    color: Color(0xff8f8f8f),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            );
-                          });
-                        },
-                      ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                              Text(
+                                hideNoti
+                                    ? 'الاشعارات غير مفعله الان'
+                                    : 'يمكنك إقاف التطبيق وتشغيله لاحقا ',
+                                style: TextStyle(
+                                    color: hideNoti
+                                        ? Colors.red
+                                        : Color(0xff828282),
+                                    fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Divider(
+                  height: 1,
+                  color: Colors.black,
+                ),
+                //########################
+                Container(
+                  height: 150,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.sunny_snowing,
+                          color: Color(0xffc1c1c1),
+                          size: 30,
+                        ),
+                        Text(
+                          'أذكار الصباح والمساء',
+                          style:
+                              TextStyle(color: Color(0xffc1c1c1), fontSize: 30),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Switch(
+                          activeColor: Color(0xFF76d668),
+                          inactiveTrackColor: Color(0xffececec),
+                          value: showNoti_MN,
+                          onChanged: (bool value) async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            setState(() {
+                              showNoti_MN = value;
+                              prefs.setBool('showNoti_MN', value);
+                              if (value) {
+                                String morningHour =
+                                    prefs.getString('morningHour') ?? '5';
+                                String morningMinute =
+                                    prefs.getString('morningMinute') ?? '00';
+                                String morningMode =
+                                    prefs.getString('morningMode') ?? 'ص';
+
+                                String nightHour =
+                                    prefs.getString('nightHour') ?? '6';
+                                String nightMinute =
+                                    prefs.getString('nightMinute') ?? '50';
+                                String nightMode =
+                                    prefs.getString('nightMode') ?? 'م';
+
+                                int mh = int.parse(morningHour);
+                                mh = mh + (morningMode == 'م' ? 12 : 0);
+                                int mm = int.parse(morningMinute);
+
+                                int nh = int.parse(nightHour);
+                                nh = nh + (nightMode == 'م' ? 12 : 0);
+                                int nm = int.parse(nightMinute);
+
+                                Noti.notificationScheduled(
+                                    id: 1,
+                                    title: 'حصن المسلم ',
+                                    body: 'اذكار الصباح',
+                                    time: Time(mh, mm),
+                                    payload: 'اذكار الصباح');
+                                Noti.notificationScheduled(
+                                    id: 2,
+                                    title: 'حصن المسلم ',
+                                    body: 'اذكار المساء',
+                                    time: Time(nh, nm),
+                                    payload: 'اذكار المساء');
+                              } else {
+                                Noti.cancelSpecificNot(1);
+                                Noti.cancelSpecificNot(2);
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  duration: Duration(milliseconds: 500),
+                                  backgroundColor: Color(0xFF76d668),
+                                  content: Text(
+                                    textAlign: TextAlign.end,
+                                    'تم بنجاح ',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                              );
+                            });
+                          },
+                        ),
+                        Container(
+                          child: Text(
+                            'تفعيل التنبيهات',
+                            style: TextStyle(
+                                color: Color(0xff8f8f8f),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Divider(
+                  height: 1,
+                  color: Colors.grey,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    int mh = int.parse(morningHour);
+                    mh = mh + (morningMode == 'م' ? 12 : 0);
+                    int mm = int.parse(morningMinute);
+                    TimeOfDay? dt = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay(hour: mh, minute: mm));
+                    if (dt != null) {
+                      List<String> ls = [];
+                      ls = dt.format(context).split(':');
+                      String hour = ls[0];
+                      List<String> m_mode = ls[1].split(' ');
+                      String minute = m_mode[0];
+                      String mode = m_mode[1];
+                      mode = mode == 'PM' ? 'م' : 'ص';
+                      setState(() {
+                        morningHour = hour;
+                        morningMinute = minute;
+                        morningMode = mode;
+                      });
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString('morningHour', morningHour);
+                      prefs.setString('morningMinute', morningMinute);
+                      prefs.setString('morningMode', morningMode);
+
+                      int mh1 = int.parse(morningHour);
+                      mh1 = mh1 + (morningMode == 'م' ? 12 : 0);
+                      int mm1 = int.parse(morningMinute);
+                      await FlutterLocalNotificationsPlugin().cancel(1);
+                      Noti.notificationScheduled(
+                          id: 1,
+                          title: 'حصن المسلم ',
+                          body: 'اذكار الصباح',
+                          time: Time(mh1, mm1),
+                          payload: 'اذكار الصباح');
+
+                      // print(ls);
+                      // print(m_mode);
+                      // print(hour);
+                      // print(minute);
+                      // print(mode);
+                    }
+                  },
+                  child: AbsorbPointer(
+                    child: Container(
+                      height: 60,
+                      color: Colors.white,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'إقياف ظهور  الاذكار على الشاشة',
+                              morningHour +
+                                  ':' +
+                                  morningMinute +
+                                  ' ' +
+                                  morningMode,
                               style: TextStyle(
-                                  color: Color(0xff8f8f8f),
+                                  color: Color(0xFF76d668),
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold),
                             ),
-                            Text(
-                              hideNoti
-                                  ? 'الاشعارات غير مفعله الان'
-                                  : 'يمكنك إقاف التطبيق وتشغيله لاحقا ',
-                              style: TextStyle(
-                                  color:
-                                      hideNoti ? Colors.red : Color(0xff828282),
-                                  fontSize: 16),
-                            ),
+                            Container(
+                              child: Text(
+                                'موعد التنبيهات لأذكار الصباح',
+                                style: TextStyle(
+                                    color: Color(0xff8f8f8f),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Divider(
-                height: 1,
-                color: Colors.black,
-              ),
-              //########################
-              Container(
-                height: 150,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.sunny_snowing,
-                        color: Color(0xffc1c1c1),
-                        size: 30,
                       ),
-                      Text(
-                        'أذكار الصباح والمساء',
-                        style:
-                            TextStyle(color: Color(0xffc1c1c1), fontSize: 30),
-                      )
-                    ],
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                height: 60,
-                color: Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Switch(
-                        activeColor: Color(0xFF76d668),
-                        inactiveTrackColor: Color(0xffececec),
-                        value: showNoti_MN,
-                        onChanged: (bool value) async {
-                          final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          setState(() {
-                            showNoti_MN = value;
-                            prefs.setBool('showNoti_MN', value);
-                            if (value) {
-                              String morningHour =
-                                  prefs.getString('morningHour') ?? '5';
-                              String morningMinute =
-                                  prefs.getString('morningMinute') ?? '00';
-                              String morningMode =
-                                  prefs.getString('morningMode') ?? 'ص';
+                Divider(
+                  height: 1,
+                  color: Colors.grey,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    int nh = int.parse(nightHour);
+                    nh = nh + (nightMode == 'م' ? 12 : 0);
+                    int nm = int.parse(nightMinute);
+                    TimeOfDay? dt = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay(hour: nh, minute: nm));
+                    if (dt != null) {
+                      // print(dt);
+                      List<String> ls = [];
+                      ls = dt.format(context).split(':');
+                      String hour = ls[0];
+                      List<String> m_mode = ls[1].split(' ');
+                      String minute = m_mode[0];
+                      String mode = m_mode[1];
+                      mode = mode == 'PM' ? 'م' : 'ص';
+                      setState(() {
+                        nightHour = hour;
+                        nightMinute = minute;
+                        nightMode = mode;
+                      });
 
-                              String nightHour =
-                                  prefs.getString('nightHour') ?? '6';
-                              String nightMinute =
-                                  prefs.getString('nightMinute') ?? '50';
-                              String nightMode =
-                                  prefs.getString('nightMode') ?? 'م';
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString('nightHour', nightHour);
+                      prefs.setString('nightMinute', nightMinute);
+                      prefs.setString('nightMode', nightMode);
 
-                              int mh = int.parse(morningHour);
-                              mh = mh + (morningMode == 'م' ? 12 : 0);
-                              int mm = int.parse(morningMinute);
-
-                              int nh = int.parse(nightHour);
-                              nh = nh + (nightMode == 'م' ? 12 : 0);
-                              int nm = int.parse(nightMinute);
-
-                              Noti.notificationScheduled(
-                                  id: 1,
-                                  title: 'حصن المسلم ',
-                                  body: 'اذكار الصباح',
-                                  time: Time(mh, mm),
-                                  payload: 'اذكار الصباح');
-                              Noti.notificationScheduled(
-                                  id: 2,
-                                  title: 'حصن المسلم ',
-                                  body: 'اذكار المساء',
-                                  time: Time(nh, nm),
-                                  payload: 'اذكار المساء');
-                            } else {
-                              Noti.cancelSpecificNot(1);
-                              Noti.cancelSpecificNot(2);
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                duration: Duration(milliseconds: 500),
-                                backgroundColor: Color(0xFF76d668),
-                                content: Text(
-                                  textAlign: TextAlign.end,
-                                  'تم بنجاح ',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
+                      int nh1 = int.parse(nightHour);
+                      nh1 = nh1 + (nightMode == 'م' ? 12 : 0);
+                      int nm1 = int.parse(nightMinute);
+                      await FlutterLocalNotificationsPlugin().cancel(2);
+                      Noti.notificationScheduled(
+                          id: 2,
+                          title: 'حصن المسلم ',
+                          body: 'اذكار المساء',
+                          time: Time(nh1, nm1),
+                          payload: 'اذكار المساء');
+                      // print(ls);
+                      // print(m_mode);
+                      // print(hour);
+                      // print(minute);
+                      // print(mode);
+                    }
+                  },
+                  child: AbsorbPointer(
+                    child: Container(
+                      height: 60,
+                      color: Colors.white,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              nightHour + ':' + nightMinute + ' ' + nightMode,
+                              style: TextStyle(
+                                  color: Color(0xFF76d668),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              child: Text(
+                                'موعد التنبيهات لأذكار المساء',
+                                style: TextStyle(
+                                    color: Color(0xff8f8f8f),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            );
-                          });
-                        },
-                      ),
-                      Container(
-                        child: Text(
-                          'تفعيل التنبيهات',
-                          style: TextStyle(
-                              color: Color(0xff8f8f8f),
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Divider(
-                height: 1,
-                color: Colors.grey,
-              ),
-              GestureDetector(
-                onTap: () async {
-                  int mh = int.parse(morningHour);
-                  mh = mh + (morningMode == 'م' ? 12 : 0);
-                  int mm = int.parse(morningMinute);
-                  TimeOfDay? dt = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay(hour: mh, minute: mm));
-                  if (dt != null) {
-                    List<String> ls = [];
-                    ls = dt.format(context).split(':');
-                    String hour = ls[0];
-                    List<String> m_mode = ls[1].split(' ');
-                    String minute = m_mode[0];
-                    String mode = m_mode[1];
-                    mode = mode == 'PM' ? 'م' : 'ص';
-                    setState(() {
-                      morningHour = hour;
-                      morningMinute = minute;
-                      morningMode = mode;
-                    });
-                    final SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    prefs.setString('morningHour', morningHour);
-                    prefs.setString('morningMinute', morningMinute);
-                    prefs.setString('morningMode', morningMode);
-
-                    int mh1 = int.parse(morningHour);
-                    mh1 = mh1 + (morningMode == 'م' ? 12 : 0);
-                    int mm1 = int.parse(morningMinute);
-                    await FlutterLocalNotificationsPlugin().cancel(1);
-                    Noti.notificationScheduled(
-                        id: 1,
-                        title: 'حصن المسلم ',
-                        body: 'اذكار الصباح',
-                        time: Time(mh1, mm1),
-                        payload: 'اذكار الصباح');
-
-                    // print(ls);
-                    // print(m_mode);
-                    // print(hour);
-                    // print(minute);
-                    // print(mode);
-                  }
-                },
-                child: AbsorbPointer(
-                  child: Container(
-                    height: 60,
-                    color: Colors.white,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            morningHour +
-                                ':' +
-                                morningMinute +
-                                ' ' +
-                                morningMode,
-                            style: TextStyle(
-                                color: Color(0xFF76d668),
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Container(
-                            child: Text(
-                              'موعد التنبيهات لأذكار الصباح',
-                              style: TextStyle(
-                                  color: Color(0xff8f8f8f),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
                       ),
                     ),
                   ),
                 ),
-              ),
-              Divider(
-                height: 1,
-                color: Colors.grey,
-              ),
-              GestureDetector(
-                onTap: () async {
-                  int nh = int.parse(nightHour);
-                  nh = nh + (nightMode == 'م' ? 12 : 0);
-                  int nm = int.parse(nightMinute);
-                  TimeOfDay? dt = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay(hour: nh, minute: nm));
-                  if (dt != null) {
-                    // print(dt);
-                    List<String> ls = [];
-                    ls = dt.format(context).split(':');
-                    String hour = ls[0];
-                    List<String> m_mode = ls[1].split(' ');
-                    String minute = m_mode[0];
-                    String mode = m_mode[1];
-                    mode = mode == 'PM' ? 'م' : 'ص';
-                    setState(() {
-                      nightHour = hour;
-                      nightMinute = minute;
-                      nightMode = mode;
-                    });
 
-                    final SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    prefs.setString('nightHour', nightHour);
-                    prefs.setString('nightMinute', nightMinute);
-                    prefs.setString('nightMode', nightMode);
-
-                    int nh1 = int.parse(nightHour);
-                    nh1 = nh1 + (nightMode == 'م' ? 12 : 0);
-                    int nm1 = int.parse(nightMinute);
-                    await FlutterLocalNotificationsPlugin().cancel(2);
-                    Noti.notificationScheduled(
-                        id: 2,
-                        title: 'حصن المسلم ',
-                        body: 'اذكار المساء',
-                        time: Time(nh1, nm1),
-                        payload: 'اذكار المساء');
-                    // print(ls);
-                    // print(m_mode);
-                    // print(hour);
-                    // print(minute);
-                    // print(mode);
-                  }
-                },
-                child: AbsorbPointer(
-                  child: Container(
-                    height: 60,
-                    color: Colors.white,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            nightHour + ':' + nightMinute + ' ' + nightMode,
-                            style: TextStyle(
-                                color: Color(0xFF76d668),
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Container(
-                            child: Text(
-                              'موعد التنبيهات لأذكار المساء',
-                              style: TextStyle(
-                                  color: Color(0xff8f8f8f),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                Divider(
+                  height: 1,
+                  color: Colors.black,
                 ),
-              ),
-
-              Divider(
-                height: 1,
-                color: Colors.black,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
