@@ -3,6 +3,7 @@ import 'package:test_local_notification1/component.dart';
 import 'package:test_local_notification1/constant.dart';
 import 'askar_Page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:test_local_notification1/main.dart';
 
 ScrollController _controller = ScrollController(initialScrollOffset: 1.0);
 
@@ -22,7 +23,13 @@ class _Page2State extends State<Page2> {
           expandedHeight: 125.0,
           elevation: 0.0,
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                  (route) => false);
+            },
             icon: Icon(
               Icons.arrow_back,
               size: 30.0,

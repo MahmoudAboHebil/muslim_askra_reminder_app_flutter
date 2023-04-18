@@ -439,7 +439,6 @@ class _TsbehState extends State<Tsbeh> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    setData();
     super.dispose();
   }
 
@@ -459,6 +458,7 @@ class _TsbehState extends State<Tsbeh> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     setState(() {
       cardNumber;
+      setData();
     });
     return Container(
       color: Colors.grey,

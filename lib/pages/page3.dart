@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_local_notification1/component.dart';
-import 'package:test_local_notification1/constant.dart';
+import 'package:test_local_notification1/main.dart';
 
 class AppBar3Page extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -10,7 +10,13 @@ class AppBar3Page extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0.0,
       leading: IconButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => MyApp(),
+              ),
+              (route) => false);
+        },
         icon: Icon(
           Icons.arrow_back,
           size: 30.0,
